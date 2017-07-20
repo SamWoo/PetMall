@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import samwoo.petmall.R;
+import samwoo.petmall.utils.SPUtils;
 import samwoo.petmall.utils.StatusBarUtils;
 
 /**
@@ -29,7 +31,8 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
     TextView mTopText;
     @BindView(R.id.register_btn)
     TextView mRegisterBtn;
-    private boolean isEnable=false;
+    private String userPhone;
+    private String userPasswd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,9 +40,14 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
         StatusBarUtils.setWindowStatusBarColor(this, R.color.colorPet);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        init();
+    }
+
+    private void init() {
         mTopText.setText("注册");
         mRegisterPhone.addTextChangedListener(this);
         mRegisterPass.addTextChangedListener(this);
+        mRegisterBtn.setClickable(false);
     }
 
     /**
@@ -54,11 +62,10 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
                 onBackPressed();
                 break;
             case R.id.register_btn:
-                if (isEnable) {
-                    startActivity(new Intent(this, VerificationCodeActivity.class));
-                    finish();
-                } else {
-                }
+                SPUtils.put(this, "user_phone", userPhone);
+                SPUtils.put(this, "user_passwd", userPasswd);
+                startActivity(new Intent(this, VerificationCodeActivity.class));
+                finish();
                 break;
             case R.id.parent_phone:
                 mRegisterPhone.requestFocus();
@@ -86,11 +93,13 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        if (!mRegisterPass.getText().toString().equals("") && !mRegisterPhone.getText().toString().equals("")) {
-            isEnable=true;
+        userPhone = mRegisterPhone.getText().toString();
+        userPasswd = mRegisterPass.getText().toString();
+        if (!TextUtils.isEmpty(userPasswd) && !TextUtils.isEmpty(userPhone)) {
+            mRegisterBtn.setClickable(true);
             mRegisterBtn.setBackgroundResource(R.drawable.shape_register_btn_pet);
         } else {
-            isEnable=false;
+            mRegisterBtn.setClickable(false);
             mRegisterBtn.setBackgroundResource(R.drawable.shape_register_btn_32);
         }
     }

@@ -59,7 +59,11 @@
             android:name=".view.activity.MissActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
+        <!--宠物信息页-->
+        <activity
+            android:name=".view.activity.PetMsgActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!--主界面页-->
         <activity

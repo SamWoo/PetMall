@@ -54,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.login_btn:
-                if (mLoginPass.getText().toString().equals("123") && mLoginPhone.getText().toString().equals("138438")) {
-                    startActivity(new Intent(this, MainActivity.class));
+                if (mLoginPass.getText().toString().equals("123") && mLoginPhone.getText().toString().equals("123")) {
+                    startActivity(new Intent(this, PetMsgActivity.class));
                     finish();
                 } else {
                     Toast.makeText(this, "您输入的账号密码有误！请重新输入！！", Toast.LENGTH_SHORT).show();

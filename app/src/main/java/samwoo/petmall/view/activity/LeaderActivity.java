@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import samwoo.petmall.R;
 import samwoo.petmall.config.Config;
+import samwoo.petmall.utils.SPUtils;
 import samwoo.petmall.utils.StatusBarUtils;
 
 /**
@@ -224,8 +225,15 @@ public class LeaderActivity extends AppCompatActivity {
 //                finish();
                 break;
             case R.id.leader_login:
-                startActivity(new Intent(LeaderActivity.this, LoginActivity.class));
+                String userPhone = (String) SPUtils.get(this, "user_phone", "");
+                String userPasswd = (String) SPUtils.get(this, "user_passwd", "");
+                if (userPasswd.equals("123") && userPhone.equals("123")) {
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                } else {
+                    startActivity(new Intent(LeaderActivity.this, LoginActivity.class));
 //                finish();
+                }
                 break;
             default:
                 break;

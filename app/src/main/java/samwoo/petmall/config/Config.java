@@ -8,6 +8,7 @@ import samwoo.petmall.R;
 
 public class Config {
     public static final int SUCCESS_INT = 200;//成功状态码
+    public static  String HEADER_IMG_PATH;
 
     public static final String[] LEADER_TOP =//引导页Top文字
             {
