@@ -134,7 +134,7 @@ public class LeaderActivity extends AppCompatActivity {
         animator = ValueAnimator.ofFloat(0, 1.0f);
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(-1);
-        animator.setDuration(50);
+        animator.setDuration(100);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

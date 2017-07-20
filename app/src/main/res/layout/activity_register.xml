@@ -165,7 +165,8 @@
         android:gravity="center"
         android:text="下一步"
         android:textColor="@color/colorWhite"
-        android:textSize="54px" />
+        android:textSize="54px"
+        android:clickable="false"/>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="wrap_content"

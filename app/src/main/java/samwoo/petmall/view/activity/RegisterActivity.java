@@ -29,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
     TextView mTopText;
     @BindView(R.id.register_btn)
     TextView mRegisterBtn;
+    private boolean isEnable=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +54,11 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
                 onBackPressed();
                 break;
             case R.id.register_btn:
-                startActivity(new Intent(this, VerificationCodeActivity.class));
-                finish();
+                if (isEnable) {
+                    startActivity(new Intent(this, VerificationCodeActivity.class));
+                    finish();
+                } else {
+                }
                 break;
             case R.id.parent_phone:
                 mRegisterPhone.requestFocus();
@@ -83,8 +87,10 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         if (!mRegisterPass.getText().toString().equals("") && !mRegisterPhone.getText().toString().equals("")) {
+            isEnable=true;
             mRegisterBtn.setBackgroundResource(R.drawable.shape_register_btn_pet);
         } else {
+            isEnable=false;
             mRegisterBtn.setBackgroundResource(R.drawable.shape_register_btn_32);
         }
     }

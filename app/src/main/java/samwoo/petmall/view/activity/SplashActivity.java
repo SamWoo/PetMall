@@ -33,6 +33,11 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        Log.e("Sam", "DPI==============" + metrics.densityDpi);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -41,8 +46,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 1500);
 //        init();
-        Log.e("Sam", "DPI=====" +String.valueOf(getApplicationContext().getResources()
-                .getDisplayMetrics().densityDpi));
     }
 
     private void init() {

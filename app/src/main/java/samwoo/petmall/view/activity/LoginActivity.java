@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.login_btn:
-                if (mLoginPass.getText().toString().equals("123") && mLoginPhone.getText().toString().equals("13838389438")) {
+                if (mLoginPass.getText().toString().equals("123") && mLoginPhone.getText().toString().equals("138438")) {
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 } else {

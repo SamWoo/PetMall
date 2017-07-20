@@ -11,15 +11,15 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/leader_img"
         android:layout_width="match_parent"
-        android:layout_height="1348px"
+        android:layout_height="360dp"
         android:layout_gravity="center_horizontal" />
 
     <!--引导页指示器-->
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="21px"
+        android:layout_height="12dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="114px">
+        android:layout_marginTop="24dp">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/leader_circle"
@@ -38,7 +38,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32px"
+                android:layout_marginLeft="12dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/shape_leader_circle_f0" />
@@ -46,7 +46,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32px"
+                android:layout_marginLeft="12dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/shape_leader_circle_f0" />
@@ -54,7 +54,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32px"
+                android:layout_marginLeft="12dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/shape_leader_circle_f0" />
@@ -75,28 +75,28 @@
     <TextView
         android:id="@+id/leader_register"
         android:layout_width="match_parent"
-        android:layout_height="167px"
-        android:layout_marginLeft="413px"
-        android:layout_marginRight="413px"
-        android:layout_marginTop="321px"
+        android:layout_height="48dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginTop="48dp"
         android:background="@drawable/shape_leader_register"
         android:gravity="center"
         android:text="注册"
         android:textColor="@color/colorWhite"
-        android:textSize="54px" />
+        android:textSize="18sp" />
 
     <!--登录-->
     <TextView
         android:id="@+id/leader_login"
         android:layout_width="match_parent"
-        android:layout_height="167px"
-        android:layout_marginLeft="413px"
-        android:layout_marginRight="413px"
-        android:layout_marginTop="42px"
+        android:layout_height="48dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/shape_leader_login"
         android:gravity="center"
         android:text="登录"
         android:textColor="@color/colorPet"
-        android:textSize="54px" />
+        android:textSize="18sp" />
 
 </com.zhy.autolayout.AutoLinearLayout>
