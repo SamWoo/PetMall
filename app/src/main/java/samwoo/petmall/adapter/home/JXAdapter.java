@@ -67,6 +67,7 @@ public class JXAdapter extends BaseAdapter {
         holder.mUserName.setText(mList.get(i).getUserName());
         holder.mUserPetName.setText(mList.get(i).getPetName());
         holder.mUserPetType.setText(mList.get(i).getPetType());
+        holder.mUserAir.setText(mList.get(i).getUserAir());
         return view;
     }
 
