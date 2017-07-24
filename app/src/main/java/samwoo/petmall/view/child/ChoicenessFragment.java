@@ -29,7 +29,7 @@ import samwoo.petmall.view.fragment.BaseFragment;
  * Created by Administrator on 2017/7/21.
  */
 
-public class JXFragment extends BaseFragment {
+public class ChoicenessFragment extends BaseFragment {
     @BindView(R.id.jx_main)
     ListView mJxMain;
     private List<JXModel> mJxList;
@@ -93,7 +93,7 @@ public class JXFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_jx, container, false);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_choiceness, container, false);
         init(view);
         loadingDatas();
         return view;
@@ -118,7 +118,10 @@ public class JXFragment extends BaseFragment {
     @Override
     public void loadingDatas() {
         mJxList = new ArrayList<>();
-        mJxList.add(new JXModel());
+        mJxList.add(new JXModel(R.drawable.jx_header,"王者荣耀","北京 朝阳",R.drawable.jx_user_pet,"鲁班7号","小小柯基犬",R.drawable.jx_main));
+        mJxList.add(new JXModel(R.drawable.jx_header,"魂斗罗","安徽 合肥",R.drawable.jx_user_pet,"黄忠","小小柯基犬",R.drawable.jx_main));
+        mJxList.add(new JXModel(R.drawable.jx_header,"嘻游记","广东 深圳",R.drawable.jx_user_pet,"高渐离","小小柯基犬",R.drawable.jx_main));
+        mJxList.add(new JXModel(R.drawable.jx_header,"貂蝉","福建 厦门",R.drawable.jx_user_pet,"宫本武藏","小小柯基犬",R.drawable.jx_main));
         mJxList.add(new JXModel());
         mJxList.add(new JXModel());
         mJxList.add(new JXModel());
@@ -148,6 +151,47 @@ public class JXFragment extends BaseFragment {
         }
 
         mJxBanner.setAdapter(new BannerAdapter());
+        mJxBanner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                resetDic();
+                switch (position) {
+                    case 0:
+                        mJxOne.setBackgroundResource(R.drawable.shape_jx_circle_white);
+                        mJxBanner.setCurrentItem(0);
+                        break;
+                    case 1:
+                        mJxTwo.setBackgroundResource(R.drawable.shape_jx_circle_white);
+                        mJxBanner.setCurrentItem(1);
+                        break;
+                    case 2:
+                        mJxThree.setBackgroundResource(R.drawable.shape_jx_circle_white);
+                        mJxBanner.setCurrentItem(2);
+                        break;
+                    case 3:
+                        mJxFour.setBackgroundResource(R.drawable.shape_jx_circle_white);
+                        mJxBanner.setCurrentItem(3);
+                        break;
+                    case 4:
+                        mJxFive.setBackgroundResource(R.drawable.shape_jx_circle_white);
+                        mJxBanner.setCurrentItem(4);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         isRun = true;
         startBanner();
     }

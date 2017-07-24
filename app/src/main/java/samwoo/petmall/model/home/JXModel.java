@@ -90,7 +90,8 @@ public class JXModel {
         this.mainImg = R.drawable.jx_main;
     }
 
-    public JXModel(int headerImg, String userName, String userAir, int userImg, String petName, String petType, int mainImg) {
+    public JXModel(int headerImg, String userName, String userAir, int userImg,
+                   String petName, String petType, int mainImg) {
         this.headerImg = headerImg;
         this.userName = userName;
         this.userAir = userAir;

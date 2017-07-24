@@ -19,9 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import samwoo.petmall.R;
-import samwoo.petmall.view.child.DTFragment;
-import samwoo.petmall.view.child.JXFragment;
-import samwoo.petmall.view.child.PDFragment;
+import samwoo.petmall.view.child.ChoicenessFragment;
+import samwoo.petmall.view.child.DynamicFragment;
+import samwoo.petmall.view.child.ChannelFragment;
 
 /**
  * Created by Administrator on 2017/7/21.
@@ -40,9 +40,9 @@ public class HomeFragment extends BaseFragment {
     ViewPager mHomeMain;
 
     private HomeAdapter homeAdapter;
-    private JXFragment jxFragment = new JXFragment();
-    private PDFragment pdFragment = new PDFragment();
-    private DTFragment dtFragment = new DTFragment();
+    private ChoicenessFragment choicenessFragment = new ChoicenessFragment();
+    private ChannelFragment channelFragment = new ChannelFragment();
+    private DynamicFragment dynamicFragment = new DynamicFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void destoryData() {
-
+        System.gc();
     }
 
     @Override
@@ -148,9 +148,9 @@ public class HomeFragment extends BaseFragment {
         public HomeAdapter(FragmentManager fm) {
             super(fm);
             mList = new ArrayList<>();
-            mList.add(jxFragment);
-            mList.add(dtFragment);
-            mList.add(pdFragment);
+            mList.add(choicenessFragment);
+            mList.add(dynamicFragment);
+            mList.add(channelFragment);
         }
 
         @Override
