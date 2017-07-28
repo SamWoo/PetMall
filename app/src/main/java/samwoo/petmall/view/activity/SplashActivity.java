@@ -36,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        Log.e("Sam", "DPI==============" + metrics.densityDpi);
+//        Log.e("Sam", "DPI==============" + metrics.densityDpi);
 
         new Handler().postDelayed(new Runnable() {
             @Override

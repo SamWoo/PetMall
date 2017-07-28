@@ -1,10 +1,13 @@
 package samwoo.petmall.view.child;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -12,9 +15,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import samwoo.petmall.R;
+import samwoo.petmall.adapter.news.NewsAdapter;
 import samwoo.petmall.adapter.news.NewsChildAdapter;
+import samwoo.petmall.config.Config;
 import samwoo.petmall.model.news.NewsChildModel;
+import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.RequsetDataUtil;
+import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
 
 /**
@@ -25,18 +36,31 @@ public class AuthorityFragment extends BaseFragment {
     @BindView(R.id.guanfang_lists)
     ListView mAuthority;
     private List<NewsChildModel> mList;
+    private List<NewsEntity.ListBean>mNewsList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_authority, null);
         init(view);
+//        loadingDatas();
+        showWarNews();
         return view;
     }
 
     @Override
     public void init(View view) {
         ButterKnife.bind(this, view);
+
+    }
+
+    @Override
+    public void destoryData() {
+
+    }
+
+    @Override
+    public void loadingDatas() {
         mList = new ArrayList<>();
         mList.add(new NewsChildModel("北京缉私犬基地将举办“国际禁毒日”宣传活动", false, false, "有宠小记者", 499, R.drawable.guanfang1));
         mList.add(new NewsChildModel("有宠福利购第八期来了，这次是个大手笔", false, false, "有宠小记者", 15000, R.drawable.guanfang2));
@@ -55,13 +79,33 @@ public class AuthorityFragment extends BaseFragment {
         mAuthority.setAdapter(adapter);
     }
 
-    @Override
-    public void destoryData() {
+    public void showWarNews() {
+        mNewsList = new ArrayList<>();
+        new RequsetDataUtil().getNews(Config.NEWS_WAR, new Callback<NewsEntity>() {
+            @Override
+            public void onResponse(Call<NewsEntity> call, Response<NewsEntity> response) {
+                mNewsList.clear();
+                mNewsList.addAll(response.body().getList());
+                Log.e("Sam","List$$$$$$$$$++++===="+response.body().getList());
+                NewsAdapter adapter = new NewsAdapter(getActivity(), mNewsList);
+                adapter.notifyDataSetChanged();
+                mAuthority.setAdapter(adapter);
+            }
 
-    }
+            @Override
+            public void onFailure(Call<NewsEntity> call, Throwable t) {
 
-    @Override
-    public void loadingDatas() {
+            }
+        });
 
+        mAuthority.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String urlPath = mNewsList.get(i).getDocurl();
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", urlPath);
+                startActivity(intent);
+            }
+        });
     }
 }

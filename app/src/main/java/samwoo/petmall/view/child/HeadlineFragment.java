@@ -1,10 +1,13 @@
 package samwoo.petmall.view.child;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -12,9 +15,19 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import samwoo.petmall.R;
+import samwoo.petmall.adapter.news.GeekAdapter;
+import samwoo.petmall.adapter.news.NewsAdapter;
 import samwoo.petmall.adapter.news.NewsChildAdapter;
+import samwoo.petmall.config.Config;
+import samwoo.petmall.model.news.GeekEntity;
 import samwoo.petmall.model.news.NewsChildModel;
+import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.RequsetDataUtil;
+import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
 
 /**
@@ -25,18 +38,64 @@ public class HeadlineFragment extends BaseFragment {
     @BindView(R.id.yaowen_list)
     ListView mHeadline;
     private List<NewsChildModel> mList;
+    private List<GeekEntity.ResultsBean> list;
+    private List<NewsEntity.ListBean> mNewsList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_headline, null);
         init(view);
+//        loadingDatas();
+//        showGeekNews();
+        showTechNews();
         return view;
     }
 
     @Override
     public void init(View view) {
         ButterKnife.bind(this, view);
+    }
+
+    /**
+     * 测试Retrofit功能
+     */
+    private void showGeekNews() {
+        list = new ArrayList<>();
+        new RequsetDataUtil().getInformation(new Callback<GeekEntity>() {
+            @Override
+            public void onResponse(Call<GeekEntity> call, Response<GeekEntity> response) {
+                list.clear();
+                list.addAll(response.body().getResults());
+                GeekAdapter adapter1 = new GeekAdapter(getActivity(), list);
+                mHeadline.setAdapter(adapter1);
+                adapter1.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<GeekEntity> call, Throwable t) {
+
+            }
+        });
+
+        mHeadline.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String urlPath = list.get(i).getUrl();
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", urlPath);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void destoryData() {
+
+    }
+
+    @Override
+    public void loadingDatas() {
         mList = new ArrayList<>();
         mList.add(new NewsChildModel("又当爹又当妈的动物奶爸，怎么这么迷人", false, false, "蒂娜", 4191, R.drawable.yaowen1));
         mList.add(new NewsChildModel("金毛每天早上叼着钱为主人买早餐", false, false, "苗仔", 5178, R.drawable.yaowen2));
@@ -53,13 +112,32 @@ public class HeadlineFragment extends BaseFragment {
         mHeadline.setAdapter(adapter);
     }
 
-    @Override
-    public void destoryData() {
+    public void showTechNews() {
+        mNewsList = new ArrayList<>();
+        new RequsetDataUtil().getNews(Config.NEWS_TECH, new Callback<NewsEntity>() {
+            @Override
+            public void onResponse(Call<NewsEntity> call, Response<NewsEntity> response) {
+                mNewsList.clear();
+                mNewsList.addAll(response.body().getList());
+                NewsAdapter adapter = new NewsAdapter(getActivity(), mNewsList);
+                adapter.notifyDataSetChanged();
+                mHeadline.setAdapter(adapter);
+            }
 
-    }
+            @Override
+            public void onFailure(Call<NewsEntity> call, Throwable t) {
 
-    @Override
-    public void loadingDatas() {
+            }
+        });
 
+        mHeadline.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String urlPath = mNewsList.get(i).getDocurl();
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", urlPath);
+                startActivity(intent);
+            }
+        });
     }
 }

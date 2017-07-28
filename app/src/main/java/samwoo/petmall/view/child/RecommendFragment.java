@@ -1,14 +1,17 @@
 package samwoo.petmall.view.child;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,9 +23,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import samwoo.petmall.R;
+import samwoo.petmall.adapter.news.NewsAdapter;
 import samwoo.petmall.adapter.news.NewsChildAdapter;
+import samwoo.petmall.api.ApiManager;
+import samwoo.petmall.config.Config;
 import samwoo.petmall.model.news.NewsChildModel;
+import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.RequsetDataUtil;
+import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
 
 /**
@@ -40,6 +52,7 @@ public class RecommendFragment extends BaseFragment {
     private ImageView mIndic5;
     private List<View> mList;
     private List<NewsChildModel> mRecList;
+    private List<NewsEntity.ListBean> mNewsList;
 
     private boolean isRun = false;
 
@@ -96,7 +109,8 @@ public class RecommendFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_recommend, container, false);
         init(view);
-        loadingDatas();
+//        loadingDatas();
+        showEduNews();
         return view;
     }
 
@@ -109,6 +123,36 @@ public class RecommendFragment extends BaseFragment {
     @Override
     public void destoryData() {
 
+    }
+
+    public void showEduNews() {
+        mNewsList = new ArrayList<>();
+        new RequsetDataUtil().getNews(Config.NEWS_EDU, new Callback<NewsEntity>() {
+            @Override
+            public void onResponse(Call<NewsEntity> call, Response<NewsEntity> response) {
+                mNewsList.clear();
+                mNewsList.addAll(response.body().getList());
+                Log.e("Sam","List$$$$$$$$$++++===="+response.body().getList());
+                NewsAdapter adapter = new NewsAdapter(getActivity(), mNewsList);
+                adapter.notifyDataSetChanged();
+                mRecMain.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<NewsEntity> call, Throwable t) {
+
+            }
+        });
+
+        mRecMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String urlPath = mNewsList.get(i).getDocurl();
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", urlPath);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

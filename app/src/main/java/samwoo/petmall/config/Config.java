@@ -8,7 +8,21 @@ import samwoo.petmall.R;
 
 public class Config {
     public static final int SUCCESS_INT = 200;//成功状态码
-    public static  String HEADER_IMG_PATH;
+    public static String HEADER_IMG_PATH;
+    public static String BasePictureUrl = "http://www.tngou.net/tnfs/api/";
+    public static String BaseNewsUrl = "http://wangyi.butterfly.mopaasapp.com";
+    public static String BaseGeekUrl = "http://gank.io/api/data/Android/20/";
+    public static String PIC_HEAD = "http://tnfs.tngou.net/image";//图片链接的前面部分
+    public static String PIC_WEB = "http://www.tngou.net/tnfs/show/";//图片链接的WEB网址
+    public static boolean IS_FLAG=false;
+    public static String NEWS_EDU="edu";//教育
+    public static String NEWS_TECH="tech";//科技
+    public static String NEWS_WAR="war";//军事
+    public static String NEWS_ENT="ent";//娱乐
+    public static String NEWS_SPORT="sport";//体育
+    public static String NEWS_LADY="lady";//女人
+    public static int NEWS_PAGE=1;
+    public static int NEWS_LIMIT=40;
 
     public static final String[] LEADER_TOP =//引导页Top文字
             {
