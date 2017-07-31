@@ -24,6 +24,7 @@ import samwoo.petmall.adapter.news.NewsChildAdapter;
 import samwoo.petmall.config.Config;
 import samwoo.petmall.model.news.NewsChildModel;
 import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.NetworkUtil;
 import samwoo.petmall.utils.RequsetDataUtil;
 import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
@@ -44,16 +45,16 @@ public class CartoonFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_cartoon, null);
         init(view);
-//        loadingDatas();
-        shoSportNews();
+        if (NetworkUtil.isConnected(getActivity())&&NetworkUtil.isAvailable(getActivity())){
+        shoSportNews();}else{
+            loadingDatas();
+        }
         return view;
     }
 
     @Override
     public void init(View view) {
         ButterKnife.bind(this, view);
-
-
     }
 
     @Override

@@ -14,9 +14,9 @@ import samwoo.petmall.model.news.NewsEntity;
 
 public class RequsetDataUtil {
 
-    public void getInformation(Callback<GeekEntity> callback) {
+    public void getInformation(String categroy,Callback<GeekEntity> callback) {
 
-        Call<GeekEntity> call = ApiManager.getInstance().getGeekService().getInformaition();
+        Call<GeekEntity> call = ApiManager.getInstance().getGeekService().getInformaition(categroy);
         call.enqueue(callback);
     }
 

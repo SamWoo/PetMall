@@ -1,5 +1,6 @@
 package samwoo.petmall.view.child;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -22,9 +24,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import samwoo.petmall.R;
+import samwoo.petmall.adapter.news.GeekGirlsAdapter;
 import samwoo.petmall.adapter.news.MagazineAdapter;
+import samwoo.petmall.config.Config;
+import samwoo.petmall.model.news.GeekEntity;
 import samwoo.petmall.model.news.MagazineModel;
+import samwoo.petmall.utils.NetworkUtil;
+import samwoo.petmall.utils.RequsetDataUtil;
+import samwoo.petmall.view.activity.ShowGirlsActicity;
 import samwoo.petmall.view.fragment.BaseFragment;
 
 /**
@@ -53,6 +64,7 @@ public class MagazineFragment extends BaseFragment {
     private List<View> mList;
     private List<MagazineModel> magazineModelList;
     private boolean isRun = false;
+    private List<GeekEntity.ResultsBean> mGeekList;
 
     private int[] images =
             {
@@ -108,6 +120,11 @@ public class MagazineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_magazine, null);
         init(view);
+        if (NetworkUtil.isConnected(getActivity()) && NetworkUtil.isAvailable(getActivity())) {
+            showGirls();
+        } else {
+            showMagazine();
+        }
         loadingDatas();
         return view;
     }
@@ -115,6 +132,15 @@ public class MagazineFragment extends BaseFragment {
     @Override
     public void init(View view) {
         ButterKnife.bind(this, view);
+    }
+
+    @Override
+    public void destoryData() {
+        unbinder.unbind();
+        System.gc();
+    }
+
+    public void showMagazine() {
         magazineModelList = new ArrayList<>();
         magazineModelList.add(new MagazineModel(R.drawable.zazhi1, "第12期", "May.2017"));
         magazineModelList.add(new MagazineModel(R.drawable.zazhi2, "第11期", "May.2017"));
@@ -135,10 +161,38 @@ public class MagazineFragment extends BaseFragment {
         mRecycler.setAdapter(adapter);
     }
 
-    @Override
-    public void destoryData() {
-        unbinder.unbind();
-        System.gc();
+    public void showGirls() {
+        mGeekList = new ArrayList<GeekEntity.ResultsBean>();
+        new RequsetDataUtil().getInformation(Config.GEEK_CATEGROY_FULI, new Callback<GeekEntity>() {
+            @Override
+            public void onResponse(Call<GeekEntity> call, Response<GeekEntity> response) {
+                if (response.isSuccessful()) {
+                    mGeekList.clear();
+                    mGeekList.addAll(response.body().getResults());
+                    StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                    mRecycler.setNestedScrollingEnabled(false);
+                    mRecycler.setLayoutManager(manager);
+                    GeekGirlsAdapter adapter = new GeekGirlsAdapter(getActivity(), mGeekList);
+                    mRecycler.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    adapter.setOnItemClickListener(new GeekGirlsAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            String imageUrl = mGeekList.get(position).getUrl();
+                            Intent intent = new Intent(getActivity(), ShowGirlsActicity.class);
+                            intent.putExtra("imageUrl", imageUrl);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeekEntity> call, Throwable t) {
+                Toast.makeText(getContext(), "获取资源失败!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -147,7 +201,7 @@ public class MagazineFragment extends BaseFragment {
         for (int i = 0; i < images.length; i++) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.header_msg_zazhi, null);
             ImageView imageView = view.findViewById(R.id.item_images);
-            Glide.with(getActivity()).load(images[i]).into(imageView);
+            Glide.with(getActivity()).load(images[i]).centerCrop().into(imageView);
             TextView textView = view.findViewById(R.id.item_titles);
             textView.setText(titles[i]);
             mList.add(view);

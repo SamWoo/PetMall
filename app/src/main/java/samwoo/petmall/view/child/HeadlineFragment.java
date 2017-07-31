@@ -26,6 +26,7 @@ import samwoo.petmall.config.Config;
 import samwoo.petmall.model.news.GeekEntity;
 import samwoo.petmall.model.news.NewsChildModel;
 import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.NetworkUtil;
 import samwoo.petmall.utils.RequsetDataUtil;
 import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
@@ -46,9 +47,12 @@ public class HeadlineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_headline, null);
         init(view);
-//        loadingDatas();
+        if (NetworkUtil.isConnected(getActivity()) && NetworkUtil.isAvailable(getActivity())) {
 //        showGeekNews();
-        showTechNews();
+            showTechNews();
+        } else {
+            loadingDatas();
+        }
         return view;
     }
 
@@ -62,7 +66,7 @@ public class HeadlineFragment extends BaseFragment {
      */
     private void showGeekNews() {
         list = new ArrayList<>();
-        new RequsetDataUtil().getInformation(new Callback<GeekEntity>() {
+        new RequsetDataUtil().getInformation(Config.GEEK_CATEGROY_ANDROID, new Callback<GeekEntity>() {
             @Override
             public void onResponse(Call<GeekEntity> call, Response<GeekEntity> response) {
                 list.clear();

@@ -24,6 +24,7 @@ import samwoo.petmall.adapter.news.NewsChildAdapter;
 import samwoo.petmall.config.Config;
 import samwoo.petmall.model.news.NewsChildModel;
 import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.NetworkUtil;
 import samwoo.petmall.utils.RequsetDataUtil;
 import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
@@ -36,15 +37,18 @@ public class AuthorityFragment extends BaseFragment {
     @BindView(R.id.guanfang_lists)
     ListView mAuthority;
     private List<NewsChildModel> mList;
-    private List<NewsEntity.ListBean>mNewsList;
+    private List<NewsEntity.ListBean> mNewsList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_authority, null);
         init(view);
-//        loadingDatas();
-        showWarNews();
+        if (NetworkUtil.isConnected(getActivity()) && NetworkUtil.isAvailable(getActivity())) {
+            showEntNews();
+        } else {
+            loadingDatas();
+        }
         return view;
     }
 
@@ -79,14 +83,14 @@ public class AuthorityFragment extends BaseFragment {
         mAuthority.setAdapter(adapter);
     }
 
-    public void showWarNews() {
+    public void showEntNews() {
         mNewsList = new ArrayList<>();
-        new RequsetDataUtil().getNews(Config.NEWS_WAR, new Callback<NewsEntity>() {
+        new RequsetDataUtil().getNews(Config.NEWS_ENT, new Callback<NewsEntity>() {
             @Override
             public void onResponse(Call<NewsEntity> call, Response<NewsEntity> response) {
                 mNewsList.clear();
                 mNewsList.addAll(response.body().getList());
-                Log.e("Sam","List$$$$$$$$$++++===="+response.body().getList());
+                Log.e("Sam", "List$$$$$$$$$++++====" + response.body().getList());
                 NewsAdapter adapter = new NewsAdapter(getActivity(), mNewsList);
                 adapter.notifyDataSetChanged();
                 mAuthority.setAdapter(adapter);

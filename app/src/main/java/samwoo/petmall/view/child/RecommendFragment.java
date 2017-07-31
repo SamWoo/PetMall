@@ -33,6 +33,7 @@ import samwoo.petmall.api.ApiManager;
 import samwoo.petmall.config.Config;
 import samwoo.petmall.model.news.NewsChildModel;
 import samwoo.petmall.model.news.NewsEntity;
+import samwoo.petmall.utils.NetworkUtil;
 import samwoo.petmall.utils.RequsetDataUtil;
 import samwoo.petmall.view.activity.WebActivity;
 import samwoo.petmall.view.fragment.BaseFragment;
@@ -109,8 +110,11 @@ public class RecommendFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_recommend, container, false);
         init(view);
-//        loadingDatas();
-        showEduNews();
+        if (NetworkUtil.isConnected(getActivity()) && NetworkUtil.isAvailable(getActivity())) {
+            showEduNews();
+        } else {
+            loadingDatas();
+        }
         return view;
     }
 
@@ -132,7 +136,7 @@ public class RecommendFragment extends BaseFragment {
             public void onResponse(Call<NewsEntity> call, Response<NewsEntity> response) {
                 mNewsList.clear();
                 mNewsList.addAll(response.body().getList());
-                Log.e("Sam","List$$$$$$$$$++++===="+response.body().getList());
+                Log.e("Sam", "List$$$$$$$$$++++====" + response.body().getList());
                 NewsAdapter adapter = new NewsAdapter(getActivity(), mNewsList);
                 adapter.notifyDataSetChanged();
                 mRecMain.setAdapter(adapter);

@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import samwoo.petmall.R;
+import samwoo.petmall.utils.NetworkUtil;
 import samwoo.petmall.view.child.AuthorityFragment;
 import samwoo.petmall.view.child.CartoonFragment;
 import samwoo.petmall.view.child.ChoicenessFragment;
@@ -44,9 +45,20 @@ public class NewsFragment extends BaseFragment {
     TextView mLine5;
     @BindView(R.id.msg_line6)
     TextView mLine6;
+    @BindView(R.id.msg_text1)
+    TextView mText1;
+    @BindView(R.id.msg_text2)
+    TextView mText2;
+    @BindView(R.id.msg_text3)
+    TextView mText3;
+    @BindView(R.id.msg_text4)
+    TextView mText4;
+    @BindView(R.id.msg_text5)
+    TextView mText5;
+    @BindView(R.id.msg_text6)
+    TextView mText6;
     @BindView(R.id.msg_ViewPager)
     ViewPager mMsgViewPager;
-
 
     private Unbinder unbinder;
 
@@ -61,6 +73,7 @@ public class NewsFragment extends BaseFragment {
     @Override
     public void init(View view) {
         ButterKnife.bind(this, view);
+        showTitles();
         restBackround();
         NewsAdapter newsAdapter = new NewsAdapter(getChildFragmentManager());
         mMsgViewPager.setAdapter(newsAdapter);
@@ -113,6 +126,24 @@ public class NewsFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private void showTitles() {
+        if (NetworkUtil.isConnected(getActivity()) && NetworkUtil.isAvailable(getActivity())) {
+            mText1.setText("教育");
+            mText2.setText("科技");
+            mText3.setText("体育");
+            mText4.setText("美图");
+            mText5.setText("女人");
+            mText6.setText("娱乐");
+        } else {
+            mText1.setText("推荐");
+            mText2.setText("要闻");
+            mText3.setText("动漫");
+            mText4.setText("杂志");
+            mText5.setText("学堂");
+            mText6.setText("官方");
+        }
     }
 
     /**
