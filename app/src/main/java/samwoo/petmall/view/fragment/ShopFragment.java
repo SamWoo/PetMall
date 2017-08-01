@@ -1,5 +1,6 @@
 package samwoo.petmall.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,11 +22,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import samwoo.petmall.R;
 import samwoo.petmall.adapter.shop.PinTuanAdapter;
 import samwoo.petmall.adapter.shop.ShopAdapter;
 import samwoo.petmall.model.shop.PinTuanModel;
 import samwoo.petmall.model.shop.ShopModel;
+import samwoo.petmall.view.activity.ShopClassifyActivity;
 
 /**
  * Created by Administrator on 2017/7/21.
@@ -108,7 +111,7 @@ public class ShopFragment extends BaseFragment {
         mShopList.add(new ShopModel("玩具用品", R.drawable.shop_parent3, new int[]{R.drawable.shop_child16, R.drawable.shop_child17, R.drawable.shop_child18, R.drawable.shop_child19,
                 R.drawable.shop_child20, R.drawable.shop_child21, R.drawable.shop_child22, R.drawable.shop_child23, R.drawable.shop_child24}));
 
-        mShopMain.setAdapter(new ShopAdapter(getActivity(),mShopList));
+        mShopMain.setAdapter(new ShopAdapter(getActivity(), mShopList));
 
         initFooter();
 
@@ -142,7 +145,7 @@ public class ShopFragment extends BaseFragment {
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_shopping, null);
 
         RecyclerView mHeaderMain = header.findViewById(R.id.header_recycler);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mHeaderMain.setLayoutManager(manager);
         mHeaderMain.setNestedScrollingEnabled(false);
         mHeaderMain.setAdapter(new PinTuanAdapter(getActivity(), mList));
@@ -208,10 +211,11 @@ public class ShopFragment extends BaseFragment {
         startBanner();
     }
 
-    private void initFooter(){
+    private void initFooter() {
         View footer = LayoutInflater.from(getActivity()).inflate(R.layout.item_shopping_footer, null);
         mShopMain.addFooterView(footer);
     }
+
     /**
      * 开启线程轮播广告
      */
@@ -260,6 +264,17 @@ public class ShopFragment extends BaseFragment {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
+        }
+    }
+
+    @OnClick({R.id.shop_type, R.id.shop_xiaoer})
+    public void onClickedView(View view) {
+        switch (view.getId()) {
+            case R.id.shop_type:
+                startActivity(new Intent(getActivity(), ShopClassifyActivity.class));
+                break;
+            default:
+                break;
         }
     }
 
